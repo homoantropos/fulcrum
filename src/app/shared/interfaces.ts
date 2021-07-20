@@ -5,6 +5,7 @@ export interface Aim {
   finish: Date;
   state: State;
   owner: User;
+  completed: boolean;
   id?: number;
 }
 
@@ -12,6 +13,7 @@ export interface State {
   ways: Array<Way>;
   readonly created: TimeStamp;
   updated: TimeStamp;
+  log: Array<TimeStamp>;
   id?: number;
 }
 
@@ -19,6 +21,7 @@ export interface Way {
   direction: string;
   milestones: Array<Milestone>;
   leader: User;
+  drivers: Array<User>;
   id?: number;
 }
 
@@ -33,10 +36,11 @@ export interface Milestone {
 export interface Task {
   todo: string;
   deadLine: Date;
-  operator: User;
+  driver: User;
   operators: Array<User>;
   readonly created: TimeStamp;
   updated: TimeStamp;
+  completed: boolean;
 }
 
 export interface TimeStamp {
