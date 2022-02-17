@@ -6,10 +6,10 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatNativeDateModule} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatIconModule} from '@angular/material/icon';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -17,14 +17,15 @@ import {MatIconModule} from '@angular/material/icon';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
     MatNativeDateModule,
+    MatFormFieldModule,
     MatInputModule,
-    MatDatepickerModule,
-    MatIconModule
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
