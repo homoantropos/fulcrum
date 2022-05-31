@@ -1,0 +1,10 @@
+<nav class="menuBar">
+  <ul>
+    <li
+      *ngFor="let point of menu"
+      (click)="onClick(point.option)"
+      [isActive]="point.isActive"
+      appMenuBarStyling
+    >{{point.option}}</li>
+  </ul>
+</nav>

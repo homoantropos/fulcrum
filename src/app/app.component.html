@@ -1,15 +1,21 @@
-<form class="center"
+<header class="header">
+  fulcrum
+  <mat-icon class="pointer" (click)="goToLogin()">login</mat-icon>
+</header>
+
+<form class="midPosition"
 [formGroup]="dateForm"
 (ngSubmit)="onSubmit(dateForm)"
 >
   <mat-form-field appearance="outline">
     <input matInput [matDatepicker]="date" formControlName="date">
+    <mat-hint>дд.мм.рррр</mat-hint>
     <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
     <mat-datepicker #date></mat-datepicker>
   </mat-form-field>
 
   <p>
-    {{dateForm.value.date | date: 'dd.MM.YY'}}
+    {{dateForm.value.date | date: 'dd.MM.YYYY'}}
   </p>
 </form>
 

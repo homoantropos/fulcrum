@@ -1,11 +1,57 @@
-/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
+* {
+  font-family: "Oswald Light", "Roboto Condensed", "Helvetica Neue", sans-serif;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.center {
+.header {
+  height: 60px;
+  margin: 0;
+  padding: 2rem 2rem 0 2rem;
+  font-size: 3rem;
+  color: white;
+  background-color: darkslategray;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.midPosition {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.midHorizontal {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.midVertical {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+mat-icon {
+  color: white;
+}
+
+mat-icon:hover {
+  color: gold;
+}
+
+mat-icon:active {
+  color: magenta;
+}
+
+.pointer {
+  cursor: pointer;
 }

@@ -1,0 +1,21 @@
+.menuBar{
+  margin: 0;
+  height: 40px;
+  background-color: darkslategray;
+}
+
+.menuBar ul {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: flex;
+  justify-content: right;
+}
+
+.menuBar ul li {
+  cursor: pointer;
+  font-size: 2.5rem;
+  list-style: none;
+  margin-right: 10px;
+  color: white;
+}

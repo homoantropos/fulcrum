@@ -13,7 +13,7 @@ export interface State {
   ways: Array<Way>;
   readonly created: TimeStamp;
   updated: TimeStamp;
-  log: Array<TimeStamp>;
+  log: Array<State>;
   id?: number;
 }
 
@@ -49,9 +49,14 @@ export interface TimeStamp {
 }
 
 export interface User {
+  username?: string;
+  name: string;
+  surname: string;
   email: string;
   password: string;
-  phone: string;
+  phones: Array<string>;
   role: string;
+  readonly registered: Date;
+  avatarSrc?: string;
   id?: number;
 }

@@ -1,40 +1,55 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import {registerLocaleData} from '@angular/common';
+import uaLocale from '@angular/common/locales/uk';
 import { CommonModule } from '@angular/common';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatIconModule} from '@angular/material/icon';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import {MenuBarStylingDirective} from './directives/menu-bar-styling.directive';
+import { UserEntryComponent } from './components/user-entry/user-entry.component';
+import { LoaderComponent } from './components/loader/loader.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoginOrRegisterFormDirective } from './directives/login-or-register-form.directive';
+
+registerLocaleData(uaLocale, 'uk');
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MenuBarComponent,
+    MenuBarStylingDirective,
+    UserEntryComponent,
+    LoaderComponent,
+    LoginOrRegisterFormDirective
+  ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     MatInputModule,
     MatDatepickerModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
-    MatNativeDateModule,
+    MatMomentDateModule,
     MatInputModule,
     MatDatepickerModule,
-    MatIconModule
+    MatIconModule,
+    MenuBarComponent
   ],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'uk'},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS}
+    {provide: LOCALE_ID, useValue: 'uk'}
   ]
 })
 export class SharedModule { }
