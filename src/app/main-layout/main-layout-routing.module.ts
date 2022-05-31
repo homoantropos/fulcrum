@@ -10,6 +10,7 @@ const routes: Routes = [
       {
         path: '', component: MainPageComponent, children: [
           {path: 'register', component: UserEntryComponent},
+          {path: 'edit/:id', component: UserEntryComponent},
           {path: 'login', component: UserEntryComponent}
         ]
       },

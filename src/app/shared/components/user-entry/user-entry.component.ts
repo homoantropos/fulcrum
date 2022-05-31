@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {User} from '../../model/interfaces';
 import {FormArrayService} from '../../services/form-array.service';
 import {AuthService} from '../../services/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
+import {switchMap} from 'rxjs/operators';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user-entry',
@@ -20,14 +22,29 @@ export class UserEntryComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private fas: FormArrayService,
-    private auth: AuthService
+    private auth: AuthService,
+    private us: UserService
   ) {
   }
 
   ngOnInit(): void {
     this.showFullForm = !this.route.toString().includes('login');
     this.userPhoneNumber = this.fb.group({userPhoneNumber: ['']});
-    this.userEntryForm = this.createForm();
+    if (this.route.toString().includes('edit')) {
+      this.route.params
+        .pipe(
+          switchMap((params: Params) => {return this.us.getUserById(params.id);})
+        )
+        .subscribe(
+          {
+            next: user => {this.userEntryForm = this.createForm(user);},
+            error: error => {console.log(error);},
+            complete: () => console.log('complete')
+          }
+        );
+    } else {
+      this.userEntryForm = this.createForm();
+    }
     if (typeof this.userEntryForm !== 'undefined') {
       this.addPhone();
     }

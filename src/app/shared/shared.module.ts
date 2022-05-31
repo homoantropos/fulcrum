@@ -15,6 +15,7 @@ import { UserEntryComponent } from './components/user-entry/user-entry.component
 import { LoaderComponent } from './components/loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoginOrRegisterFormDirective } from './directives/login-or-register-form.directive';
+import {HttpClientModule} from '@angular/common/http';
 
 registerLocaleData(uaLocale, 'uk');
 
@@ -27,9 +28,10 @@ registerLocaleData(uaLocale, 'uk');
     LoginOrRegisterFormDirective
   ],
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
     CommonModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatMomentDateModule,
     MatInputModule,
@@ -38,9 +40,10 @@ registerLocaleData(uaLocale, 'uk');
     MatProgressSpinnerModule
   ],
   exports: [
-    FormsModule,
-    ReactiveFormsModule,
     CommonModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatMomentDateModule,
     MatInputModule,
