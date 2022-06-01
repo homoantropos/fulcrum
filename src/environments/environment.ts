@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  dBUlr: 'localhost:8050/api'
+  dBUlr: 'http://localhost:8050/api'
 };
 
 /*

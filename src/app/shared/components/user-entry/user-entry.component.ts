@@ -4,8 +4,9 @@ import {User} from '../../model/interfaces';
 import {FormArrayService} from '../../services/form-array.service';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Params} from '@angular/router';
-import {switchMap} from 'rxjs/operators';
+import {catchError, switchMap} from 'rxjs/operators';
 import {UserService} from '../../services/user.service';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-user-entry',
@@ -33,37 +34,50 @@ export class UserEntryComponent implements OnInit {
     if (this.route.toString().includes('edit')) {
       this.route.params
         .pipe(
-          switchMap((params: Params) => {return this.us.getUserById(params.id);})
+          switchMap((params: Params) => {
+            return this.us.getUserById(params.id);
+          }),
+          catchError(error => {
+            console.log(error);
+            return throwError(error);
+          })
         )
         .subscribe(
           {
-            next: user => {this.userEntryForm = this.createForm(user);},
-            error: error => {console.log(error);},
+            next: user => {
+              this.userEntryForm = this.createForm(user);
+              this.addPhone(user.phones);
+              console.log(this.userEntryForm);
+            },
+            error: error => console.log(error),
             complete: () => console.log('complete')
           }
         );
     } else {
       this.userEntryForm = this.createForm();
+      this.addPhone();
     }
     if (typeof this.userEntryForm !== 'undefined') {
       this.addPhone();
     }
-    console.log(this.userEntryForm);
+    setTimeout(
+      () => console.log(this.userEntryForm), 0
+    );
   }
 
   createForm(user?: User): FormGroup {
-    return this.fb.group({
-        username: [user?.username ? user.username : ''],
-        name: [user ? user.name : ''],
-        surname: [user ? user.surname : ''],
-        email: [user ? user.email : ''],
-        password: [user ? user.password : ''],
-        phones: user ? user.phones : this.fb.array([]),
-        role: [user ? user.role : ''],
-        registered: [user ? user.registered : new Date()],
-        avatarSrc: [user ? user.avatarSrc : '']
-      }
-    );
+    const form = this.fb.group({
+      username: [user ? user.username ? user.username : '' : ''],
+      name: [user ? user.name : ''],
+      surname: [user ? user.surname : ''],
+      email: [user ? user.email : ''],
+      password: [user ? user.password : ''],
+      phones: this.fb.array([]),
+      role: [user ? user.role : ''],
+      registered: [user ? user.registered : new Date()],
+      avatarSrc: [user ? user.avatarSrc : '']
+    });
+    return form;
   }
 
   onSubmit(value: any): void {
@@ -74,9 +88,13 @@ export class UserEntryComponent implements OnInit {
     return this.userEntryForm?.controls.phones as FormArray;
   }
 
-  addPhone(): void {
-    if (typeof this.userPhoneNumber !== 'undefined') {
-      this.fas.addControl(this.phones, this.userPhoneNumber);
+  addPhone(phones?: Array<string>): void {
+    if (typeof phones !== 'undefined') {
+      phones.map(
+        phoneNumber => this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: [phoneNumber]}))
+        );
+    } else {
+      this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: ['']}));
     }
   }
 

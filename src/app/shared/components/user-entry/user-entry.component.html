@@ -1,11 +1,12 @@
 <ng-container *ngIf="userEntryForm; else loader">
 
-  <ng-container *ngIf="showFullForm">
-    <h1>fullForm</h1>
-  </ng-container>
 
   <ng-container *ngIf="!showFullForm">
     <h1>loginForm</h1>
+  </ng-container>
+
+  <ng-container *ngIf="showFullForm">
+    <h1>fullForm</h1>
   </ng-container>
 
 </ng-container>
