@@ -16,7 +16,6 @@ import {throwError} from 'rxjs';
 export class UserEntryComponent implements OnInit {
 
   userEntryForm: FormGroup | undefined;
-  userPhoneNumber: FormGroup | undefined;
   showFullForm: boolean | undefined;
 
   constructor(
@@ -30,7 +29,6 @@ export class UserEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.showFullForm = !this.route.toString().includes('login');
-    this.userPhoneNumber = this.fb.group({userPhoneNumber: ['']});
     if (this.route.toString().includes('edit')) {
       this.route.params
         .pipe(
@@ -92,16 +90,14 @@ export class UserEntryComponent implements OnInit {
     if (typeof phones !== 'undefined') {
       phones.map(
         phoneNumber => this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: [phoneNumber]}))
-        );
+      );
     } else {
       this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: ['']}));
     }
   }
 
   removePhone(index: number): void {
-    if (typeof this.userPhoneNumber !== 'undefined') {
-      this.fas.removeControl(this.phones, index);
-    }
+    this.fas.removeControl(this.phones, index);
   }
 }
 
