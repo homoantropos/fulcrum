@@ -1,0 +1,106 @@
+<ng-container *ngIf="userEntryForm; else loader">
+
+  <form
+    class="entryForm midHorizontal"
+    [formGroup]="userEntryForm"
+    (ngSubmit)="onSubmit(userEntryForm.value)"
+  >
+    <h3 class="m-t-1">fill all fields</h3>
+
+    <mat-form-field>
+      <mat-label>name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        #nameInput
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>surname</mat-label>
+      <input
+        matInput
+        formControlName="surname"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>username</mat-label>
+      <input
+        matInput
+        formControlName="username"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>password</mat-label>
+      <input
+        matInput
+        formControlName="password"
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>repeat password</mat-label>
+      <input
+        matInput
+        #controlPassword
+      >
+    </mat-form-field>
+
+    <div formArrayName="phones" *ngFor="let __ of phones.controls; index as i">
+      <div class="formArrayGroupContainer">
+        <mat-form-field>
+          <mat-label>phone number</mat-label>
+          <input
+            matInput
+            formControlName="{{i}}"
+          >
+        </mat-form-field>
+        <mat-icon class="midVertical pointer" (click)="removePhone(i)">delete</mat-icon>
+      </div>
+    </div>
+
+    <mat-icon class="midHorizontal pointer" (click)="addPhone()">add</mat-icon>
+
+    <mat-form-field>
+      <mat-label>role</mat-label>
+      <input
+        matInput
+        formControlName="role"
+      >
+    </mat-form-field>
+
+    <button
+      class="col-sm-6"
+      mat-button
+      color="primary"
+      type="button"
+    >
+      cansel
+    </button>
+
+    <button
+      class="col-sm-6"
+      mat-button
+      color="primary"
+      type="submit"
+      [disabled]="submitted || userEntryForm.invalid"
+    >
+      save
+    </button>
+
+  </form>
+
+</ng-container>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

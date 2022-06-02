@@ -11,11 +11,13 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import {MenuBarStylingDirective} from './directives/menu-bar-styling.directive';
-import { UserEntryComponent } from './components/user-entry/user-entry.component';
+import { UserEditorComponent } from './components/user-editor/user-editor.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoginOrRegisterFormDirective } from './directives/login-or-register-form.directive';
 import {HttpClientModule} from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
+import {MatButtonModule} from '@angular/material/button';
 
 registerLocaleData(uaLocale, 'uk');
 
@@ -23,9 +25,10 @@ registerLocaleData(uaLocale, 'uk');
   declarations: [
     MenuBarComponent,
     MenuBarStylingDirective,
-    UserEntryComponent,
+    UserEditorComponent,
     LoaderComponent,
-    LoginOrRegisterFormDirective
+    LoginOrRegisterFormDirective,
+    LoginComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,8 @@ registerLocaleData(uaLocale, 'uk');
     MatInputModule,
     MatDatepickerModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule
   ],
   exports: [
     CommonModule,

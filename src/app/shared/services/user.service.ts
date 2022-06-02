@@ -40,7 +40,7 @@ export class UserService {
         username: [user ? user.username ? user.username : '' : ''],
         name: [user ? user.name : ''],
         surname: [user ? user.surname : ''],
-        email: [user ? user.email : ''],
+        email: [user ? user.email : '', [Validators.required, Validators.email]],
         password: [user ? user.password : ''],
         phones: this.fb.array([]),
         role: [user ? user.role : ''],
@@ -50,11 +50,11 @@ export class UserService {
       if (user.phones.length > 0) {
         user.phones.map(
           phoneNumber => {
-            (form.controls.phones as FormArray).push(this.fb.group({userPhoneNumber: [phoneNumber]}));
+            (form.controls.phones as FormArray).push(this.fb.control( [phoneNumber]));
           }
         );
       } else {
-        (form.controls.phones as FormArray).push(this.fb.group({userPhoneNumber: ['']}));
+        (form.controls.phones as FormArray).push(this.fb.control(['']));
       }
     } else {
       form = this.fb.group({

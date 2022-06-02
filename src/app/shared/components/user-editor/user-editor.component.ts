@@ -7,55 +7,56 @@ import {UserService} from '../../services/user.service';
 import {throwError} from 'rxjs';
 
 @Component({
-  selector: 'app-user-entry',
-  templateUrl: './user-entry.component.html'
+  selector: 'app-user-editor',
+  templateUrl: './user-editor.component.html'
 })
 
-export class UserEntryComponent implements OnInit {
+export class UserEditorComponent implements OnInit {
 
   userEntryForm: FormGroup | undefined;
 
-  @ViewChild('emailInput') private emailInput: ElementRef;
-  showFullForm: boolean | undefined;
+  @ViewChild('nameInput') private nameInput: ElementRef;
   submitted = false;
 
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private auth: AuthService,
-    private us: UserService
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
-    this.showFullForm = !this.route.toString().includes('login');
     if (this.route.toString().includes('edit')) {
       this.route.params
         .pipe(
           switchMap((params: Params) => {
-            return this.us.getUser(params.id);
+            return this.userService.getUser(params.id);
           }),
           catchError(error => {
             return throwError(error);
           })
         )
         .subscribe({
-            next: user => this.userEntryForm = this.us.createUserEntryForm(user),
-            error: error => console.log(error)
-          });
-    } else if (this.route.toString().includes('register')) {
-      this.us.getUser()
-        .subscribe({
-          next: user => this.userEntryForm = this.us.createUserEntryForm(user),
+          next: user => this.userEntryForm = this.userService.createUserEntryForm(user),
           error: error => console.log(error)
         });
-    } else {
-      this.userEntryForm = this.us.createUserEntryForm();
+    } else if (this.route.toString().includes('register')) {
+      this.userService.getUser()
+        .pipe(
+          catchError(error => {
+            return throwError(error);
+          })
+        )
+        .subscribe({
+          next: user => this.userEntryForm = this.userService.createUserEntryForm(user),
+          error: error => console.log(error)
+        });
     }
     setTimeout(
       () => {
-        if (typeof this.userEntryForm.controls.email !== 'undefined') {
-          this.emailInput.nativeElement.focus();
+        if (typeof this.userEntryForm?.controls.name !== 'undefined') {
+          this.nameInput.nativeElement.focus();
         }
       }, 0
     );
@@ -72,12 +73,13 @@ export class UserEntryComponent implements OnInit {
     return this.userEntryForm.controls?.phones as FormArray;
   }
 
-  addPhone(phones?: Array<string>): void {
-    this.phones.push(this.fb.group({userPhoneNumber: ['']}));
+  addPhone(): void {
+    this.phones.push(this.fb.control(['']));
   }
 
   removePhone(index: number): void {
     this.phones.removeAt(index);
   }
+
 }
 

@@ -2,16 +2,17 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainLayoutComponent} from './components/main-layout.component';
 import {MainPageComponent} from './components/main-page/main-page.component';
-import {UserEntryComponent} from '../shared/components/user-entry/user-entry.component';
+import {UserEditorComponent} from '../shared/components/user-editor/user-editor.component';
+import {LoginComponent} from '../shared/components/login/login.component';
 
 const routes: Routes = [
   {
     path: '', component: MainLayoutComponent, children: [
       {
         path: '', component: MainPageComponent, children: [
-          {path: 'register', component: UserEntryComponent},
-          {path: 'edit/:id', component: UserEntryComponent},
-          {path: 'login', component: UserEntryComponent}
+          {path: 'register', component: UserEditorComponent},
+          {path: 'edit/:id', component: UserEditorComponent},
+          {path: 'login', component: LoginComponent}
         ]
       },
     ]
