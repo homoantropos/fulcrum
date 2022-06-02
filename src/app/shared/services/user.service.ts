@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {User} from '../model/interfaces';
 import {environment} from '../../../environments/environment';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,57 @@ import {environment} from '../../../environments/environment';
 export class UserService {
 
   constructor(
-    private http: HttpClient
-  ) {}
-
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${environment.dBUlr}/user/${id}`);
+    private http: HttpClient,
+    private fb: FormBuilder
+  ) {
   }
+
+  getUser(id?: number): Observable<User> {
+    if (typeof id !== 'undefined') {
+      return this.http.get<User>(`${environment.dBUlr}/user/${id}`);
+    } else {
+      return of({
+        username: '',
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        phones: [],
+        role: '',
+      } as User);
+    }
+  }
+
+  createUserEntryForm(user?: User): FormGroup {
+    let form: FormGroup = null;
+    if (typeof user !== 'undefined') {
+      form = this.fb.group({
+        username: [user ? user.username ? user.username : '' : ''],
+        name: [user ? user.name : ''],
+        surname: [user ? user.surname : ''],
+        email: [user ? user.email : ''],
+        password: [user ? user.password : ''],
+        phones: this.fb.array([]),
+        role: [user ? user.role : ''],
+        registered: [user ? user.registered : new Date()],
+        avatarSrc: [user ? user.avatarSrc : '']
+      });
+      if (user.phones.length > 0) {
+        user.phones.map(
+          phoneNumber => {
+            (form.controls.phones as FormArray).push(this.fb.group({userPhoneNumber: [phoneNumber]}));
+          }
+        );
+      } else {
+        (form.controls.phones as FormArray).push(this.fb.group({userPhoneNumber: ['']}));
+      }
+    } else {
+      form = this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]]
+      });
+    }
+    return form;
+  }
+
 }

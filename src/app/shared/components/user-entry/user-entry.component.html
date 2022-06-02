@@ -1,16 +1,71 @@
 <ng-container *ngIf="userEntryForm; else loader">
 
+  <form
+    class="entryForm midHorizontal"
+    [formGroup]="userEntryForm"
+    (ngSubmit)="onSubmit(userEntryForm.value)"
+  >
+    <h3 class="m-t-1">fill all fields</h3>
+    <mat-form-field>
+      <mat-label>email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+        #emailInput
+      >
+    </mat-form-field>
 
-  <ng-container *ngIf="!showFullForm">
-    <h1>loginForm</h1>
-  </ng-container>
+    <mat-form-field>
+      <mat-label>password</mat-label>
+      <input
+        matInput
+        formControlName="password"
+      >
+    </mat-form-field>
 
-  <ng-container *ngIf="showFullForm">
-    <h1>fullForm</h1>
-  </ng-container>
+    <ng-container *ngIf="showFullForm">
+      <mat-form-field>
+        <mat-label>password</mat-label>
+        <input
+          matInput
+          #controlPassword
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>username</mat-label>
+        <input
+          matInput
+          formControlName="username"
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>role</mat-label>
+        <input
+          matInput
+          formControlName="role"
+        >
+      </mat-form-field>
+    </ng-container>
+  </form>
 
 </ng-container>
 
 <ng-template #loader>
   <app-loader></app-loader>
 </ng-template>
+
+phones: this.fb.array([])

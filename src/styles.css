@@ -55,3 +55,22 @@ mat-icon:active {
 .pointer {
   cursor: pointer;
 }
+
+.entryForm {
+  width: 50vmax;
+  overflow: auto;
+}
+
+.entryForm mat-form-field {
+  width: 100%
+}
+
+.entryForm mat-button {
+
+}
+
+@media screen and (orientation: portrait) {
+  .entryForm {
+    width: 80vmin;
+  }
+}

@@ -1,7 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {User} from '../../model/interfaces';
-import {FormArrayService} from '../../services/form-array.service';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Params} from '@angular/router';
 import {catchError, switchMap} from 'rxjs/operators';
@@ -16,12 +14,14 @@ import {throwError} from 'rxjs';
 export class UserEntryComponent implements OnInit {
 
   userEntryForm: FormGroup | undefined;
+
+  @ViewChild('emailInput') private emailInput: ElementRef;
   showFullForm: boolean | undefined;
+  submitted = false;
 
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private fas: FormArrayService,
     private auth: AuthService,
     private us: UserService
   ) {
@@ -33,71 +33,51 @@ export class UserEntryComponent implements OnInit {
       this.route.params
         .pipe(
           switchMap((params: Params) => {
-            return this.us.getUserById(params.id);
+            return this.us.getUser(params.id);
           }),
           catchError(error => {
-            console.log(error);
             return throwError(error);
           })
         )
-        .subscribe(
-          {
-            next: user => {
-              this.userEntryForm = this.createForm(user);
-              this.addPhone(user.phones);
-              console.log(this.userEntryForm);
-            },
-            error: error => console.log(error),
-            complete: () => console.log('complete')
-          }
-        );
+        .subscribe({
+            next: user => this.userEntryForm = this.us.createUserEntryForm(user),
+            error: error => console.log(error)
+          });
+    } else if (this.route.toString().includes('register')) {
+      this.us.getUser()
+        .subscribe({
+          next: user => this.userEntryForm = this.us.createUserEntryForm(user),
+          error: error => console.log(error)
+        });
     } else {
-      this.userEntryForm = this.createForm();
-      this.addPhone();
-    }
-    if (typeof this.userEntryForm !== 'undefined') {
-      this.addPhone();
+      this.userEntryForm = this.us.createUserEntryForm();
     }
     setTimeout(
-      () => console.log(this.userEntryForm), 0
+      () => {
+        if (typeof this.userEntryForm.controls.email !== 'undefined') {
+          this.emailInput.nativeElement.focus();
+        }
+      }, 0
     );
   }
 
-  createForm(user?: User): FormGroup {
-    const form = this.fb.group({
-      username: [user ? user.username ? user.username : '' : ''],
-      name: [user ? user.name : ''],
-      surname: [user ? user.surname : ''],
-      email: [user ? user.email : ''],
-      password: [user ? user.password : ''],
-      phones: this.fb.array([]),
-      role: [user ? user.role : ''],
-      registered: [user ? user.registered : new Date()],
-      avatarSrc: [user ? user.avatarSrc : '']
-    });
-    return form;
-  }
-
   onSubmit(value: any): void {
-
+    if (this.userEntryForm.invalid) {
+      return;
+    }
+    this.submitted = true;
   }
 
   get phones(): FormArray {
-    return this.userEntryForm?.controls.phones as FormArray;
+    return this.userEntryForm.controls?.phones as FormArray;
   }
 
   addPhone(phones?: Array<string>): void {
-    if (typeof phones !== 'undefined') {
-      phones.map(
-        phoneNumber => this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: [phoneNumber]}))
-      );
-    } else {
-      this.fas.addControl(this.phones, this.fb.group({userPhoneNumber: ['']}));
-    }
+    this.phones.push(this.fb.group({userPhoneNumber: ['']}));
   }
 
   removePhone(index: number): void {
-    this.fas.removeControl(this.phones, index);
+    this.phones.removeAt(index);
   }
 }
 
