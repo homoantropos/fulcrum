@@ -18,19 +18,7 @@ export class UserService {
   }
 
   getUser(id?: number): Observable<User> {
-    if (typeof id !== 'undefined') {
       return this.http.get<User>(`${environment.dBUlr}/user/${id}`);
-    } else {
-      return of({
-        username: '',
-        name: '',
-        surname: '',
-        email: '',
-        password: '',
-        phones: [],
-        role: '',
-      } as User);
-    }
   }
 
   createUserEntryForm(user?: User): FormGroup {
