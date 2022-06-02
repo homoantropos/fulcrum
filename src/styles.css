@@ -53,11 +53,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   transform: translate(0, -50%);
 }
 
-mat-icon:hover {
+.pointer:hover {
   color: gold;
 }
 
-mat-icon:active {
+.pointer:active {
   color: magenta;
 }
 
@@ -74,12 +74,20 @@ mat-icon:active {
   width: 100%
 }
 
-.entryForm mat-button {
-
+.entryForm button {
 }
 
 @media screen and (orientation: portrait) {
   .entryForm {
     width: 80vmin;
   }
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5 {
+  text-align: center;
 }

@@ -1,1 +1,89 @@
-<p>login works!</p>
+<ng-container *ngIf="loginForm; else loader">
+  <form
+    class="loginForm midHorizontal"
+    [formGroup]="loginForm"
+    (ngSubmit)="onLogin(loginForm.value)"
+  >
+
+    <h3>enter your credentials</h3>
+    <div class="matFormContainer">
+      <mat-icon>email</mat-icon>
+      <mat-form-field>
+        <mat-label>email</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="email"
+          #emailInput
+        />
+      </mat-form-field>
+    </div>
+    <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid">
+      <small
+        class="error"
+        *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.errors.required"
+      >
+        поле повинно бути заповнене
+      </small>
+      <small
+        class="error"
+        *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.errors.email"
+      >
+        введіть валідну електронну пошту
+      </small>
+    </div>
+
+    <div class="matFormContainer">
+      <mat-icon>key</mat-icon>
+      <mat-form-field>
+        <mat-label>password</mat-label>
+        <input
+          matInput
+          [type]="type"
+          formControlName="password"
+        />
+      </mat-form-field>
+      <mat-icon
+        class="pointer"
+        (appChangeVisibility)="setVisibility($event)"
+      >
+        {{visibility}}
+      </mat-icon>
+    </div>
+    <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password.invalid">
+      <small
+        class="error"
+        *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.errors.required"
+      >
+        поле повинно бути заповнене
+      </small>
+      <small
+        class="error"
+        *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.errors.minlength"
+      >
+        пароль повинен складатися з {{loginForm.controls.password.errors.minlength.requiredLength}} знаків.
+        ви ввели {{loginForm.controls.password.errors.minlength.actualLength}}
+      </small>
+    </div>
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+    >
+      cansel
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="loginForm.invalid || submitted"
+    >
+      login
+    </button>
+  </form>
+
+</ng-container>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

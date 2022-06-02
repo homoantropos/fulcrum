@@ -18,6 +18,7 @@ import { LoginOrRegisterFormDirective } from './directives/login-or-register-for
 import {HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import {MatButtonModule} from '@angular/material/button';
+import { ChangeVisibilityDirective } from './directives/change-visibility.directive';
 
 registerLocaleData(uaLocale, 'uk');
 
@@ -28,7 +29,8 @@ registerLocaleData(uaLocale, 'uk');
     UserEditorComponent,
     LoaderComponent,
     LoginOrRegisterFormDirective,
-    LoginComponent
+    LoginComponent,
+    ChangeVisibilityDirective
   ],
   imports: [
     CommonModule,
